@@ -1,0 +1,84 @@
+﻿Dating Platform MVP - Assignment Sheet
+1) Goal (One sentence)
+Ship a clean, fast MVP dating site (landing → sign-up → browse profiles → filter → simple chat) that’s easy to extend, deploys to our server, and can scale later without a rewrite.
+* Alywas feel freel to use open source codebases, in case good solutions are available. Often with little bit of search one can find fitting (partial solutions).
+* Also feel free to use AI tools
+2) Non-Negotiables (MVP)
+* Landing page: high-conversion, looks great on mobile phone aswell, fast.
+* Auth: Google OAuth + email/password (with verification + reset).
+* Profiles: photo(s), basic bio, age, location, gender (3 male, female, ladyboy), lanuage, extrainfo…
+* Filters: age range, location, language, online
+* Chat (simple): basic inbox + messages (no realtime). Polling is fine
+* Scalable by design: clean boundaries (API ↔ web), indexes, room to shard/cache.
+
+3) Guardrails & Freedom
+   * Guardrails: security, privacy, performance, basic tests, docs
+   * Freedom: choose exact libs within the preferred stack; propose small UX/feature tweaks that improve quality/scope fit.
+
+4) Tech Example (suggested, not mandatory)
+      * Frontend: Next.js (App Router), React, TypeScript.
+      * Backend: Node.js + NestJS (or Express with structure), TypeScript, OpenAPI.
+      * DB: PostgreSQL + Prisma ORM.
+      * Storage: S3-compatible (or local in MVP) behind an abstraction.
+      * Auth: NextAuth (or Auth.js) with Google + email/password.
+      * Chat: REST endpoints + polling (10–20s) or manual refresh.
+      * Infra: Docker Compose, Nginx reverse proxy, HTTPS (Let’s Encrypt).
+      * Optional for scaling later: Redis (sessions/cache), read replicas, CDN.
+
+If you prefer a different but equivalent stack, propose it in the Solution Proposal and explain trade-offs briefly.
+
+7) API (MVP endpoints)
+         * Auth: POST /auth/signup, POST /auth/login, POST /auth/refresh, POST /auth/password/reset, GET /auth/me
+
+         * Profile: GET /profiles?filters...&page=, GET /profiles/:id, PUT /profiles/:id, POST /photos, DELETE /photos/:id
+
+         * Chat: GET /threads, POST /threads (create if not exists), GET /threads/:id/messages?page=, POST /threads/:id/messages, POST /threads/:id/read
+
+Keep responses JSON; design for future mobile app reuse. Document with OpenAPI/Swagger.
+8) Security & Privacy (must-do)
+            * Input validation (server-side), rate limiting on auth/chat, strong password hashing (bcrypt/argon2), HTTPS only, CSRF protection for web forms, secure cookies, CORS configured.
+
+            * Basic moderation hooks: report user/report photo endpoints (can be no-ops but wired).
+
+            * Content limits: max photos per user, image size/type checks.
+
+9) Performance & UX
+               * Server pagination everywhere (profiles, messages).
+
+               * Filtering via indexed fields only in MVP.
+
+               * Images: generate thumbnails, lazy-load on grid.
+
+               * TTFB target < 300ms on simple endpoints, LCP < 2.5s on landing.
+
+10) Deployment
+                  * Deliver: docker-compose.yml (web, api, db, proxy), .env.example, seed script.
+
+                  * Docs: README.md with one-command boot; migration steps; backup/restore for DB.
+
+                  * Env: staging + production configs; health checks.
+
+11) Reuse Allowed (and encouraged)
+                     * You may integrate existing modules (e.g., UI kits, auth libs, image upload widgets) if they’re reputable and license-compatible. Keep abstractions so we can swap later.
+
+________________
+
+
+Choices to confirm (you / product)
+                        * Tone & copy for landing page (I can supply copy if needed).
+
+                        * Exact profile fields (keep MVP list or add: height, education, religion, kids, smoking?).
+
+                        * Allowed languages list and default UI language(s).
+
+                        * Photo count limit (recommend 1–6) and max size (e.g., 5MB).
+
+                        * Message retention (e.g., 12 months) and export policy.
+
+                        * Countries/cities we prioritize for location dropdowns.
+
+________________
+
+
+Summary you can paste to the dev
+Build a clean, mobile-first dating MVP with: landing page, Google/email auth, profiles with photos, indexed filtering (age, location, language, activity), and a non-realtime chat using REST + polling. Use a TypeScript stack (Next.js + Node/Nest + PostgreSQL + Prisma), Dockerize for our server, document the API, and keep modules decoupled for a future mobile app. Optimize for security, pagination, and image performance. Propose minor UX/tech improvements where they simplify or de-risk the build.
