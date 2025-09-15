@@ -1,4 +1,69 @@
-﻿Dating Platform MVP - Assignment Sheet
+Tables:
+Tables (MongoDB Collections)
+
+1. Users
+
+id (ObjectId)
+username (string)
+email (string, unique)
+passwordHash (string)      # never store plain passwords
+dateOfBirth (date)
+place (string)
+gender (string)
+bio (string)
+lastTimeOnline (date)
+createdAt (date)
+updatedAt (date)
+
+
+2. Documents / Pictures
+
+id (ObjectId)
+userId (ObjectId → users.id)
+filePath (string)          # storage path or URL
+createdAt (date)
+
+
+(Optional: you can embed photos[] and documents[] directly inside the users collection if you want to keep it simpler.)
+
+3. Messages
+
+id (ObjectId)
+senderId (ObjectId → users.id)
+receiverId (ObjectId → users.id)
+content (string)
+createdAt (date)
+
+
+(Optional: add a status field for read/unread later.)
+
+4. Logins / Sessions (only if you want session tracking; not needed for pure JWT)
+
+id (ObjectId)
+userId (ObjectId → users.id)
+token (string / JWT)
+createdAt (date)
+expiresAt (date)
+------------------
+
+User = CRUD (create, read, update, delete)
+Message = CR (create, read)
+data entries in db
+-----
+how to update messages
+session ? login?
+messages link to profile
+
+
+
+
+
+
+
+
+
+
+Dating Platform MVP - Assignment Sheet
 1) Goal (One sentence)
 Ship a clean, fast MVP dating site (landing → sign-up → browse profiles → filter → simple chat) that’s easy to extend, deploys to our server, and can scale later without a rewrite.
 * Alywas feel freel to use open source codebases, in case good solutions are available. Often with little bit of search one can find fitting (partial solutions).
@@ -81,4 +146,5 @@ ________________
 
 
 Summary you can paste to the dev
+
 Build a clean, mobile-first dating MVP with: landing page, Google/email auth, profiles with photos, indexed filtering (age, location, language, activity), and a non-realtime chat using REST + polling. Use a TypeScript stack (Next.js + Node/Nest + PostgreSQL + Prisma), Dockerize for our server, document the API, and keep modules decoupled for a future mobile app. Optimize for security, pagination, and image performance. Propose minor UX/tech improvements where they simplify or de-risk the build.
