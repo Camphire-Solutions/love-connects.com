@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoveConnect - Home</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      padding: 12px 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      gap: 10px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #ff3366;
+    }
+
+    .filters-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filters-nav select, .filters-nav button {
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .filters-nav button {
+      background: #ff3366;
+      color: #fff;
+      border: none;
+      transition: 0.3s;
+    }
+    .filters-nav button:hover {
+      background: #e52e5a;
+    }
+
+    .nav-actions button {
+      margin-left: 10px;
+      padding: 7px 12px;
+      background: #ff3366;
+      color: #fff;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin: 5px;
+    }
+    .nav-actions button:hover {
+      background: #e52e5a;
+    }
+
+    /* Profile Grid */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .profile-card {
+      background: #fff;
+      border-radius: 12px;
+      text-align: center;
+      padding: 15px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .profile-card img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 3px solid #ff3366;
+    }
+
+    .profile-card h3 {
+      font-size: 18px;
+      margin: 5px 0;
+      color: #333;
+    }
+
+    .profile-card p {
+      font-size: 14px;
+      color: #777;
+    }
+
+    .connect-btn {
+      margin-top: 10px;
+      padding: 8px 15px;
+      background: #ff3366;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .connect-btn:hover {
+      background: #e52e5a;
+    }
+
+    /* Footer */
+    .footer-card {
+      text-align: center;
+      background: #fff;
+      padding: 20px;
+      font-size: 14px;
+      color: #555;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+    }
+
+    .footer-card h3 {
+      color: #ff3366;
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    .footer-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      transition: 0.3s;
+      padding: 5px 8px;
+      border-radius: 6px;
+    }
+
+    .footer-links a:hover {
+      background: #ff3366;
+      color: #fff;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">💘 LoveConnect</div>
+    
+    <!-- Filters on Navbar -->
+    <div class="filters-nav">
+      <select id="ageFilter" onchange="applyFilters()">
+        <option value="all">All Ages</option>
+        <option value="18-25">18-25</option>
+        <option value="26-35">26-35</option>
+        <option value="36+">36+</option>
+      </select>
+      <select id="cityFilter" onchange="applyFilters()">
+        <option value="any">Any Location</option>
+        <option value="New York">New York</option>
+        <option value="Los Angeles">Los Angeles</option>
+        <option value="Chicago">Chicago</option>
+        <option value="Miami">Miami</option>
+        <option value="Houston">Houston</option>
+      </select>
+      <button onclick="applyFilters()">✨ Filter</button>
+    </div>
+
+    <div class="nav-actions">
+      <button onclick="openProfile()">👤 My Profile</button>
+      <button onclick="logout()">🚪 Logout</button>
+    </div>
+  </header>
+
+  <!-- Profiles Grid -->
+  <main id="profileGrid" class="profile-grid"></main>
+
+  <!-- Footer -->
+  <footer class="footer-card">
+    <h3>💖 LoveConnect</h3>
+    <p>Connecting hearts worldwide. Find your perfect match today!</p>
+    <div class="footer-links">
+      <a href="about.html">🌐 About</a>
+      <a href="terms.html">📜 Terms</a>
+      <a href="privacy.html">🔒 Privacy</a>
+      <a href="contact.html">📩 Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    // ===== Profiles Data (Added more fake users) =====
+    const profiles = [
+      { id: 1, name: "Amy", age: 24, city: "New York", img: "https://randomuser.me/api/portraits/women/65.jpg" },
+      { id: 2, name: "Sophia", age: 27, city: "Los Angeles", img: "https://randomuser.me/api/portraits/women/44.jpg" },
+      { id: 3, name: "James", age: 29, city: "Chicago", img: "https://randomuser.me/api/portraits/men/32.jpg" },
+      { id: 4, name: "Emily", age: 22, city: "Miami", img: "https://randomuser.me/api/portraits/women/12.jpg" },
+      { id: 5, name: "David", age: 34, city: "Houston", img: "https://randomuser.me/api/portraits/men/18.jpg" },
+      { id: 6, name: "Olivia", age: 26, city: "New York", img: "https://randomuser.me/api/portraits/women/50.jpg" },
+      // { id: 7, name: "Liam", age: 31, city: "Chicago", img: "https://randomuser.me/api/portraits/men/45.jpg" },
+      // { id: 8, name: "Emma", age: 28, city: "Los Angeles", img: "https://randomuser.me/api/portraits/women/30.jpg" }
+    ];
+
+    const profileGrid = document.getElementById("profileGrid");
+
+    // ===== Render Profiles =====
+    function renderProfiles(list) {
+      profileGrid.innerHTML = "";
+      if (list.length === 0) {
+        profileGrid.innerHTML = "<p>❌ No matches found. Try different filters!</p>";
+        return;
+      }
+      list.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "profile-card";
+        card.innerHTML = `
+          <img src="${p.img}" alt="profile">
+          <h3>${p.name}, ${p.age}</h3>
+          <p>📍 ${p.city}</p>
+          <button class="connect-btn" onclick="viewProfile(${p.id})">❤️ Connect</button>
+        `;
+        profileGrid.appendChild(card);
+      });
+    }
+
+    // ===== Apply Filters =====
+    function applyFilters() {
+      const ageFilter = document.getElementById("ageFilter").value;
+      const cityFilter = document.getElementById("cityFilter").value;
+
+      let filtered = profiles.filter(p => {
+        const cityMatch = (cityFilter === "any" || p.city === cityFilter);
+
+        let ageMatch = true;
+        if (ageFilter === "18-25") ageMatch = p.age >= 18 && p.age <= 25;
+        else if (ageFilter === "26-35") ageMatch = p.age >= 26 && p.age <= 35;
+        else if (ageFilter === "36+") ageMatch = p.age >= 36;
+
+        return cityMatch && ageMatch;
+      });
+
+      renderProfiles(filtered);
+    }
+
+    // ===== Profile Redirect =====
+    function viewProfile(id) {
+      localStorage.setItem("friendId", id);
+      window.location.href = "friend-profile.html";
+    }
+
+    // Navbar Actions
+    function openProfile() { window.location.href = "profile.html"; }
+    function logout() {
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    }
+
+    // Load all on start
+    renderProfiles(profiles);
+  </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Dashboard - LoveConnect</title>
+<style>
+  body { font-family: 'Poppins', sans-serif; margin: 0; background: #ffe6eb; }
+  .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+  .logo { font-size: 22px; color: #ff3366; font-weight: bold; }
+  .nav-actions button { margin-left: 10px; padding: 8px 14px; border-radius: 15px; border: none; background: #ff3366; color: #fff; cursor: pointer; }
+  .nav-actions button:hover { background: #e52e5a; }
+
+  .dashboard { display: flex; gap: 20px; padding: 20px; flex-wrap: wrap; justify-content: center; }
+
+  .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 6px 12px rgba(0,0,0,0.1); text-align: center; min-width: 250px; }
+  .card img { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px; border: 3px solid #ff3366; }
+  .card h2, .card h3 { color: #333; margin-bottom: 8px; }
+  .card p { color: #777; margin-bottom: 10px; }
+
+  .friends, .messages, .requests, .browse-users { max-height: 300px; overflow-y: auto; }
+  .friend-card, .request-card, .profile-card { display: flex; align-items: center; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee; cursor: pointer; border-radius: 8px; margin-bottom: 5px; transition: 0.2s; }
+  .friend-card:hover, .request-card:hover, .profile-card:hover { background: #ffe6f0; }
+  .friend-card img, .request-card img, .profile-card img { width: 50px; height: 50px; border-radius: 50%; margin-right: 10px; }
+  .connect-btn, .accept-btn, .reject-btn { border: none; padding: 6px 12px; border-radius: 12px; cursor: pointer; font-size: 12px; }
+  .connect-btn { background: #ff3366; color: #fff; }
+  .connect-btn:hover { background: #e52e5a; }
+  .accept-btn { background: #28a745; color: #fff; margin-right:5px;}
+  .accept-btn:hover { background: #218838; }
+  .reject-btn { background: #dc3545; color: #fff; }
+  .reject-btn:hover { background: #c82333; }
+
+  .chat-box { max-height: 150px; overflow-y: auto; background: #fff0f5; padding: 10px; border-radius: 8px; margin-bottom: 10px; text-align:left;}
+  .chat-msg { margin-bottom: 6px; }
+  .chat-input { display: flex; gap: 8px; }
+  .chat-input input { flex: 1; padding: 6px 10px; border-radius: 20px; border: 1px solid #ccc; }
+  .chat-input button { padding: 6px 12px; border-radius: 20px; border: none; background: #ff3366; color: #fff; cursor: pointer; }
+  .chat-input button:hover { background: #e52e5a; }
+
+  .filters { display: flex; gap: 10px; margin-bottom: 10px; justify-content: center; }
+  .filters select, .filters button { padding: 6px 10px; border-radius: 12px; border: 1px solid #ccc; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">💖 LoveConnect</div>
+  <div class="nav-actions">
+    <button onclick="goHome()">🏠 Home</button>
+    <button onclick="openProfile()">👤 Profile</button>
+    <button onclick="logout()">🚪 Logout</button>
+  </div>
+</header>
+
+<div class="dashboard">
+  <!-- User Profile Card -->
+  <div class="card">
+    <img id="userPhoto" src="https://via.placeholder.com/100" alt="User Photo">
+    <h2 id="userName">Your Name</h2>
+    <p id="userCity">📍 Your City</p>
+    <button onclick="editProfile()">✏️ Edit Profile</button>
+  </div>
+
+  <!-- Friends List -->
+  <div class="card friends">
+    <h3>💌 Friends</h3>
+    <div id="friendsList"></div>
+  </div>
+
+  <!-- Messages & Requests -->
+  <div class="card">
+    <h3>🗨️ Messages</h3>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Type a message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+    <h3>📬 Friend Requests</h3>
+    <div id="requestsList"></div>
+  </div>
+
+  <!-- Browse Users -->
+  <div class="card browse-users">
+    <h3>🔍 Browse Users</h3>
+    <div class="filters">
+      <select id="ageFilter" onchange="applyFilters()">
+        <option value="all">All Ages</option>
+        <option value="18-25">18-25</option>
+        <option value="26-35">26-35</option>
+        <option value="36+">36+</option>
+      </select>
+      <select id="cityFilter" onchange="applyFilters()">
+        <option value="any">Any City</option>
+        <option value="New York">New York</option>
+        <option value="Los Angeles">Los Angeles</option>
+        <option value="Chicago">Chicago</option>
+        <option value="Miami">Miami</option>
+      </select>
+      <button onclick="applyFilters()">Search</button>
+    </div>
+    <div id="browseList"></div>
+  </div>
+</div>
+
+<script>
+  // ===== User Info =====
+  const userProfile = JSON.parse(localStorage.getItem("userProfile")) || {};
+  document.getElementById("userPhoto").src = userProfile.photo || "https://via.placeholder.com/100";
+  document.getElementById("userName").innerText = userProfile.name || "Your Name";
+  document.getElementById("userCity").innerText = "📍 " + (userProfile.city || "Unknown");
+
+  // ===== Friends =====
+  const friends = [
+    { id: 1, name: "Amy", img: "https://randomuser.me/api/portraits/women/65.jpg" },
+    { id: 2, name: "Sophia", img: "https://randomuser.me/api/portraits/women/44.jpg" }
+  ];
+  const friendsList = document.getElementById("friendsList");
+  friends.forEach(f => {
+    const card = document.createElement("div");
+    card.className = "friend-card";
+    card.innerHTML = `<img src="${f.img}"><p>${f.name}</p>`;
+    friendsList.appendChild(card);
+  });
+
+  // ===== Requests =====
+  const requests = [
+    { id: 3, name: "Emily", img: "https://randomuser.me/api/portraits/women/12.jpg" }
+  ];
+  const requestsList = document.getElementById("requestsList");
+  requests.forEach(r => {
+    const card = document.createElement("div");
+    card.className = "request-card";
+    card.innerHTML = `<img src="${r.img}"><p>${r.name}</p>
+      <div>
+        <button class="accept-btn" onclick="acceptRequest(${r.id})">Accept</button>
+        <button class="reject-btn" onclick="rejectRequest(${r.id})">Reject</button>
+      </div>`;
+    requestsList.appendChild(card);
+  });
+
+  // ===== Chat =====
+  const chatBox = document.getElementById("chatBox");
+  const chatInput = document.getElementById("chatInput");
+  function sendMessage() {
+    const msg = chatInput.value.trim();
+    if(msg) {
+      const div = document.createElement("div");
+      div.className = "chat-msg";
+      div.innerHTML = `<b>You:</b> ${msg}`;
+      chatBox.appendChild(div);
+      chatInput.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  }
+
+  // ===== Browse Users =====
+  const users = [
+    {id: 4, name: "James", age: 29, city:"Chicago", img:"https://randomuser.me/api/portraits/men/32.jpg"},
+    {id: 5, name: "Emily", age: 22, city:"Miami", img:"https://randomuser.me/api/portraits/women/12.jpg"},
+    {id: 6, name: "Michael", age: 34, city:"Los Angeles", img:"https://randomuser.me/api/portraits/men/44.jpg"}
+  ];
+
+  const browseList = document.getElementById("browseList");
+
+  function renderBrowse(list) {
+    browseList.innerHTML = "";
+    if(list.length===0){ browseList.innerHTML="<p>No users found</p>"; return;}
+    list.forEach(u=>{
+      const div = document.createElement("div");
+      div.className = "profile-card";
+      div.innerHTML = `<img src="${u.img}"><p><b>${u.name}</b>, ${u.age}</p><p>📍 ${u.city}</p>
+      <button class="connect-btn" onclick="connectUser(${u.id})">Connect</button>`;
+      browseList.appendChild(div);
+    });
+  }
+
+  function applyFilters(){
+    const ageFilter = document.getElementById("ageFilter").value;
+    const cityFilter = document.getElementById("cityFilter").value;
+
+    let filtered = users.filter(u=>{
+      let ageMatch = true;
+      if(ageFilter==="18-25") ageMatch = u.age>=18 && u.age<=25;
+      else if(ageFilter==="26-35") ageMatch = u.age>=26 && u.age<=35;
+      else if(ageFilter==="36+") ageMatch = u.age>=36;
+
+      const cityMatch = (cityFilter==="any" || u.city===cityFilter);
+
+      return ageMatch && cityMatch;
+    });
+    renderBrowse(filtered);
+  }
+
+  function connectUser(id){ alert("Sent connection request to user " + id); }
+
+  // ===== Navbar Actions =====
+  function goHome() { window.location.href = "homepage.html"; }
+  function openProfile() { window.location.href = "profile.html"; }
+  function logout() { localStorage.removeItem("userProfile"); window.location.href = "index.html"; }
+  function editProfile() { openProfile(); }
+
+  // Initial Render
+  renderBrowse(users);
+</script>
+
+</body>
+</html>

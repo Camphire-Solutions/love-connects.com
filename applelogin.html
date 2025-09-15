@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apple Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #000000, #333333);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-container {
+      background: #1c1c1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      width: 320px;
+      text-align: center;
+    }
+
+    .login-container h1 {
+      margin-bottom: 20px;
+    }
+
+    .login-container input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .apple-btn {
+      width: 95%;
+      padding: 12px;
+      background: #0071e3;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .apple-btn:hover {
+      background: #005bb5;
+    }
+
+    .error {
+      color: #ff4d4f;
+      font-size: 14px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .toggle-password {
+      font-size: 12px;
+      color: #aaa;
+      cursor: pointer;
+      text-align: right;
+      margin-top: -8px;
+      margin-bottom: 10px;
+    }
+
+    .loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Apple Login</h1>
+    <input type="text" id="username" placeholder="Apple Id">
+    <input type="password" id="password" placeholder="Password">
+    <div class="toggle-password" onclick="togglePassword()">👁 Show Password</div>
+    <button class="apple-btn" id="loginBtn" onclick="func()">Login with Apple</button>
+    <div id="errorMsg" class="error">Invalid Apple ID or Password!</div>
+  </div>
+  
+  <script>
+    function func() {
+      let Id = document.getElementById("username").value;
+      let pass = document.getElementById('password').value;
+      let errorMsg = document.getElementById("errorMsg");
+      let btn = document.getElementById("loginBtn");
+
+      btn.classList.add("loading");
+      btn.innerText = "Logging in...";
+
+      setTimeout(() => {
+        if (Id === 'pavan123@gamil.com' && pass === '12345678') {
+          alert("✅ Successful login!");
+          window.location.assign("Profile/profile.html");
+        } else {
+          errorMsg.style.display = "block";
+          btn.classList.remove("loading");
+          btn.innerText = "Login with Apple";
+        }
+      }, 1000); // simulate delay
+    }
+
+    function togglePassword() {
+      let passField = document.getElementById("password");
+      let toggleText = document.querySelector(".toggle-password");
+      if (passField.type === "password") {
+        passField.type = "text";
+        toggleText.innerText = "🙈 Hide Password";
+      } else {
+        passField.type = "password";
+        toggleText.innerText = "👁 Show Password";
+      }
+    }
+  </script>
+</body>
+</html>

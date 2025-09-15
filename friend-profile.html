@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💘 Friend Profile - LoveConnect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    color: #333;
+  }
+
+  /* Navbar */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .navbar .logo {
+    font-size: 1.5rem;
+    color: #e91e63;
+    font-weight: bold;
+  }
+
+  .navbar button {
+    background: #e91e63;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  
+  .navbar button:hover {
+    background: #c2185b;
+  }
+
+  /* Container */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  /* Friend Profile */
+  .friend-info {
+    flex: 1;
+    min-width: 280px;
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .friend-info .friend-photo {
+    width: 100%;
+    border-radius: 15px;
+    object-fit: cover;
+  }
+  .friend-info h2 {
+    margin-top: 10px;
+    color: #e91e63;
+  }
+  .friend-info ul {
+    list-style: none;
+    padding: 0;
+  }
+  .friend-info ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* Chat Box */
+  .chat-box {
+    flex: 1;
+    min-width: 280px;
+    background: #fff;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .chat-box h3 {
+    color: #e91e63;
+    margin-bottom: 10px;
+  }
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    background: #fdf0f5;
+  }
+  .message {
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 15px;
+    max-width: 70%;
+  }
+  .message.user {
+    background: #e91e63;
+    color: white;
+    align-self: flex-end;
+  }
+  .message.friend {
+    background: #f8d1df;
+    color: #333;
+    align-self: flex-start;
+  }
+  .chat-input {
+    display: flex;
+    gap: 10px;
+  }
+  .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+  }
+  .chat-input button {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    background: #e91e63;
+    color: white;
+    cursor: pointer;
+  }
+  .chat-input button:hover {
+    background: #c2185b;
+  }
+
+  .friend-info .friend-photo {
+  width: 150px;       /* smaller width */
+  height: 150px;      /* smaller height */
+  border-radius: 50%; /* make it circular */
+  object-fit: cover;
+  margin: 0 auto;     /* center the image */
+  display: block;
+  }
+
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">💖 LoveConnect</div>
+    <button onclick="goBack()">⬅ Back</button>
+  </header>
+
+  <main class="container">
+    <!-- Left: Friend Profile -->
+    <section class="friend-info">
+      <img id="friendPhoto" src="" alt="Friend Photo" class="friend-photo">
+      <h2 id="friendName"></h2>
+      <p id="friendCity"></p>
+
+      <h3>About Me</h3>
+      <p id="friendBio"></p>
+
+      <h3>Details</h3>
+      <ul id="friendDetails">
+        <!-- Height, Weight, Education, etc. -->
+      </ul>
+    </section>
+
+    <!-- Right: Chat Box -->
+    <section class="chat-box">
+      <h3>💌 Chat with <span id="chatFriendName"></span></h3>
+      <div id="messages" class="messages"></div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Load friend profile
+const profiles = [
+  { id: 1, name: "Amy", age: 24, city: "New York", img: "https://randomuser.me/api/portraits/women/65.jpg", bio: "Love exploring new cafes and reading romance novels.", height: "165 cm", weight: "55 kg", education: "Bachelor's", language: "English" },
+  { id: 2, name: "Sophia", age: 27, city: "Los Angeles", img: "https://randomuser.me/api/portraits/women/44.jpg", bio: "Travel enthusiast and foodie.", height: "170 cm", weight: "60 kg", education: "Master's", language: "English, Spanish" },
+  { id: 3, name: "James", age: 29, city: "Chicago", img: "https://randomuser.me/api/portraits/men/32.jpg", bio: "Music lover and gym enthusiast.", height: "180 cm", weight: "75 kg", education: "Bachelor's", language: "English" },
+  { id: 4, name: "Emily", age: 22, city: "Miami", img: "https://randomuser.me/api/portraits/women/12.jpg", bio: "Beach lover and animal lover.", height: "160 cm", weight: "50 kg", education: "High School", language: "English" }
+];
+
+const friendId = localStorage.getItem("friendId");
+const friend = profiles.find(p => p.id == friendId);
+
+if(friend){
+  document.getElementById("friendPhoto").src = friend.img;
+  document.getElementById("friendName").innerText = `${friend.name}, ${friend.age}`;
+  document.getElementById("friendCity").innerText = `📍 ${friend.city}`;
+  document.getElementById("friendBio").innerText = friend.bio;
+  document.getElementById("chatFriendName").innerText = friend.name;
+
+  const details = document.getElementById("friendDetails");
+  details.innerHTML = `
+    <li>Height: ${friend.height}</li>
+    <li>Weight: ${friend.weight}</li>
+    <li>Education: ${friend.education}</li>
+    <li>Languages: ${friend.language}</li>
+  `;
+}
+
+// Go back
+function goBack() { window.location.href = "homepage.html"; }
+
+// Chat feature
+function sendMessage(){
+  const input = document.getElementById("chatInput");
+  const msg = input.value.trim();
+  if(msg==="") return;
+
+  const messagesDiv = document.getElementById("messages");
+  const userMsg = document.createElement("div");
+  userMsg.className = "message user";
+  userMsg.innerText = msg;
+  messagesDiv.appendChild(userMsg);
+
+  // Auto-reply
+  setTimeout(()=>{
+    const reply = document.createElement("div");
+    reply.className = "message friend";
+    reply.innerText = "💌 " + friend.name + " received your message!";
+    messagesDiv.appendChild(reply);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }, 1000);
+
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  input.value="";
+}
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - LoveConnect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to right, #ffdde1, #ee9ca7);
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: #ff3366;
+      color: #fff;
+    }
+    .navbar nav a {
+      margin-left: 20px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .navbar nav a:hover {
+      color: #ffe6ec;
+    }
+
+    /* Profile Section */
+    .profile-container {
+      display: flex;
+      max-width: 1100px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .profile-card {
+      flex: 1;
+      padding: 30px;
+      background: #ffe6ec;
+      text-align: center;
+    }
+    .photo-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+    .profile-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 4px solid #ff3366;
+      object-fit: cover;
+    }
+    .upload-btn {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: #ff3366;
+      color: #fff;
+      padding: 8px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .upload-btn:hover {
+      background: #cc0044;
+    }
+    .profile-card h2 {
+      margin: 15px 0 5px;
+      font-size: 22px;
+      color: #ff3366;
+    }
+    .profile-card .location {
+      color: #666;
+    }
+
+    /* Profile Form */
+    .profile-details {
+      flex: 2;
+      padding: 30px;
+    }
+    .profile-details h3 {
+      margin-bottom: 20px;
+      color: #ff3366;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      color: #444;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #ff3366;
+      box-shadow: 0 0 6px rgba(255,51,102,0.4);
+    }
+    .update-btn {
+      background: #ff3366;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+    .update-btn:hover {
+      background: #cc0044;
+    }
+
+    /* Rules Section */
+    .interests {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    .interests h3 {
+      margin-bottom: 10px;
+      color: #ff3366;
+    }
+    .interests ul {
+      list-style: none;
+      padding: 0;
+    }
+    .interests ul li {
+      margin: 8px 0;
+      font-size: 15px;
+    }
+
+    /* Footer */
+    footer {
+      background: #ff3366;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+    }
+    footer a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    footer a:hover {
+      color: #ffe6ec;
+      text-decoration: underline;
+    }
+
+    input:invalid {
+    border: 2px solid red;
+    animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      50% { transform: translateX(4px); }
+      75% { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
+    }
+
+      .shake {
+    animation: shake 0.3s;
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+  }
+
+
+
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">💖 LoveConnect</div>
+    <nav>
+      <a href="homepage.html">Home</a>
+      <a href="browse.html">Browse</a>
+      <a href="messages.html">Messages</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+  </header>
+
+  <!-- Profile Section -->
+  <section class="profile-container">
+    <!-- Left Profile Card -->
+    <div class="profile-card">
+      <div class="photo-wrapper">
+        <img id="profile-photo" src="https://via.placeholder.com/150" alt="User Photo" class="profile-photo">
+        <label for="photoUpload" class="upload-btn"><i class="fa-solid fa-camera"></i></label>
+        <input type="file" id="photoUpload" accept="image/*" hidden>
+      </div>
+      <h2 id="username">Your Name</h2>
+      <p class="location" id="location">📍 Your City</p>
+    </div>
+
+    <!-- Right Profile Details -->
+    <div class="profile-details">
+      <h3>Profile Information</h3>
+      <form id="profileForm">
+        <div class="form-group">
+          <label><i class="fa-solid fa-user"></i> Full Name</label>
+          <input type="text" id="name" placeholder="Enter your name" required>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-venus-mars"></i> Gender</label>
+          <select id="gender">
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-calendar"></i> Age</label>
+          <input type="number" id="age" placeholder="Enter your age" required>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-heart"></i> Looking for</label>
+          <select id="lookingFor">
+            <option>Man</option>
+            <option>Woman</option>
+            <option>Any</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-city"></i> City</label>
+          <input type="text" id="city" placeholder="Enter your city">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-ruler-vertical"></i> Height</label>
+          <input type="text" id="height" placeholder="e.g. 180cm / 5'10">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-weight-scale"></i> Weight</label>
+          <input type="text" id="weight" placeholder="e.g. 75kg">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-graduation-cap"></i> Education</label>
+          <input type="text" id="education" placeholder="e.g. Bachelor's, PhD">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-language"></i> English Ability</label>
+          <input type="text" id="english" placeholder="e.g. Fluent">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-globe"></i> Other Language</label>
+          <input type="text" id="language" placeholder="e.g. Tagalog, None">
+        </div>
+
+        <button type="submit" class="update-btn">💾 Save Profile</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Interests / Rules Section
+  <section class="interests">
+    <h3>📸 Photo Rules</h3>
+    <ul>
+      <li>✅ Photos must be good quality</li>
+      <li>🚫 No sexual or nude photos</li>
+      <li>👶 No children allowed</li>
+      <li>⚠️ Fake/celebrity photos are banned</li>
+    </ul>
+  </section> -->
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 LoveConnect | 
+      <a href="privacy.html">Privacy</a> | 
+      <a href="terms.html">Terms</a> | 
+      <a href="help.html">Help</a>
+    </p>
+  </footer>
+
+  <!-- JS -->
+  <script>
+  const photoUpload = document.getElementById("photoUpload");
+  const profilePhoto = document.getElementById("profile-photo");
+  const profileForm = document.getElementById("profileForm");
+
+  // Show preview of uploaded photo
+  photoUpload.addEventListener("change", function() {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        profilePhoto.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Save profile with validation
+  profileForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let isValid = true;
+
+    // All required fields
+    const requiredFields = ["name", "gender", "age", "lookingFor", "city", "height", "weight", "education", "english", "language"];
+    requiredFields.forEach(id => {
+      const field = document.getElementById(id);
+      if (!field.value.trim()) {
+        field.style.border = "2px solid red";
+        field.classList.add("shake");
+        isValid = false;
+      } else {
+        field.style.border = "2px solid #ccc";
+        field.classList.remove("shake");
+      }
+    });
+
+    if (!isValid) {
+      alert("⚠️ Please fill in all required fields.");
+      return;
+    }
+
+    // Collect user data
+    const user = {
+      name: document.getElementById("name").value.trim(),
+      gender: document.getElementById("gender").value,
+      age: document.getElementById("age").value.trim(),
+      lookingFor: document.getElementById("lookingFor").value,
+      city: document.getElementById("city").value,
+      height: document.getElementById("height").value,
+      weight: document.getElementById("weight").value,
+      education: document.getElementById("education").value,
+      english: document.getElementById("english").value,
+      language: document.getElementById("language").value,
+      photo: profilePhoto.src
+    };
+
+    localStorage.setItem("userProfile", JSON.stringify(user));
+
+    alert("✅ Profile saved successfully!");
+    window.location.href = "user-dashboard.html";
+  });
+
+  // Press Enter anywhere to submit
+  profileForm.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      e.preventDefault(); // prevent default only if needed
+      profileForm.requestSubmit(); // triggers submit event
+    }
+  });
+
+
+  
+
+  // profile.js - on page load
+const savedProfile = JSON.parse(localStorage.getItem("userProfile"));
+
+if(savedProfile){
+  document.getElementById("name").value = savedProfile.name || "";
+  document.getElementById("gender").value = savedProfile.gender || "Male";
+  document.getElementById("age").value = savedProfile.age || "";
+  document.getElementById("lookingFor").value = savedProfile.lookingFor || "Any";
+  document.getElementById("city").value = savedProfile.city || "";
+  document.getElementById("height").value = savedProfile.height || "";
+  document.getElementById("weight").value = savedProfile.weight || "";
+  document.getElementById("education").value = savedProfile.education || "";
+  document.getElementById("english").value = savedProfile.english || "";
+  document.getElementById("language").value = savedProfile.language || "";
+  document.getElementById("profile-photo").src = savedProfile.photo || "https://via.placeholder.com/150";
+}
+
+</script>
+
+
+</body>
+</html>

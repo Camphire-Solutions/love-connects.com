@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Settings - LoveConnect</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #fdf0f5;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background: #fff;
+      padding: 15px 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { color: #ff3366; font-weight: bold; font-size: 22px; }
+    .settings-section {
+      max-width: 500px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+    .settings-section h2 { color: #ff3366; margin-bottom: 15px; }
+    .settings-section ul { list-style: none; padding: 0; }
+    .settings-section li { margin-bottom: 12px; }
+    .settings-section a {
+      text-decoration: none;
+      padding: 10px 15px;
+      display: inline-block;
+      background: #ff3366;
+      color: #fff;
+      border-radius: 12px;
+      transition: 0.3s;
+    }
+    .settings-section a:hover { background: #e52e5a; }
+    .password-form { margin-top: 20px; display: none; }
+    .password-form input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .password-form button {
+      padding: 10px 15px;
+      background: #ff3366;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .password-form button:hover { background: #e52e5a; }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">💖 LoveConnect</div>
+  </header>
+
+  <section class="settings-section">
+    <h2>Account Settings</h2>
+    <ul>
+      <li><a href="#" id="changePassBtn">🔑 Change Password</a></li>
+      <li><a href="profile.html">👤 Edit Profile</a></li>
+      <li><a href="index.html">🚪 Logout</a></li>
+    </ul>
+
+    <!-- Change Password Form -->
+    <form class="password-form" id="passwordForm">
+      <input type="password" id="currentPass" placeholder="Current Password" required>
+      <input type="password" id="newPass" placeholder="New Password" required>
+      <input type="password" id="confirmPass" placeholder="Confirm New Password" required>
+      <button type="submit">💾 Save Password</button>
+    </form>
+  </section>
+
+  <script>
+    const changePassBtn = document.getElementById("changePassBtn");
+    const passwordForm = document.getElementById("passwordForm");
+
+    // Toggle password form visibility
+    changePassBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      passwordForm.style.display = passwordForm.style.display === "block" ? "none" : "block";
+    });
+
+    // Handle password change submit
+    passwordForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const current = document.getElementById("currentPass").value;
+      const newPass = document.getElementById("newPass").value;
+      const confirm = document.getElementById("confirmPass").value;
+
+      if (newPass !== confirm) {
+        alert("❌ New passwords do not match!");
+        return;
+      }
+      // Here you can add saving logic (localStorage or backend)
+      alert("✅ Password changed successfully!");
+      passwordForm.reset();
+      passwordForm.style.display = "none";
+    });
+  </script>
+</body>
+</html>
