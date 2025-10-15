@@ -33,3 +33,4 @@ const updateProfile = (req, res) => {
 };
 
 module.exports = { getProfiles, getMyProfile, updateProfile };
+
